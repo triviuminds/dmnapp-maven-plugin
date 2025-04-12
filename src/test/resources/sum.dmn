@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dmn:definitions xmlns:dmn="https://www.omg.org/spec/DMN/20230324/MODEL/" xmlns="https://kiegroup.org/dmn/_D5C09393-48EC-41FB-AA30-ED6C0D2F5987" xmlns:feel="https://www.omg.org/spec/DMN/20230324/FEEL/" xmlns:kie="https://kie.org/dmn/extensions/1.0" xmlns:dmndi="https://www.omg.org/spec/DMN/20230324/DMNDI/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_F5E23604-88FE-4A2A-9697-7448A92BD5E3" name="sum" typeLanguage="https://www.omg.org/spec/DMN/20230324/FEEL/" namespace="https://kiegroup.org/dmn/_D5C09393-48EC-41FB-AA30-ED6C0D2F5987">
+  <dmn:extensionElements />
+  <dmn:itemDefinition id="_43DF259B-CB0F-4ED2-8F2D-0B1D05B75881" name="Loan" isCollection="false">
+    <dmn:itemComponent id="_294F50A9-2BB1-4141-9F02-AE51A063D2DF" name="baseLoanAmount" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_8CFFEAD6-4266-44C6-858E-E997AE0747B3" name="transaction" isCollection="false">
+      <dmn:typeRef>Transaction</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_5F9A47B3-42E1-4F72-B804-212BF1F9FA67" name="Transaction" isCollection="false">
+    <dmn:itemComponent id="_52108142-4462-4154-A3BF-46BF17A1C7E1" name="insuranceAmount" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_EE09DEEF-6801-4FC3-8C40-16D44CC4DD30" name="numberList" isCollection="true">
+    <dmn:typeRef>number</dmn:typeRef>
+  </dmn:itemDefinition>
+  <dmn:inputData id="_61790127-FE8C-4642-ABE0-928BEE5C0316" name="loan">
+    <dmn:extensionElements />
+    <dmn:variable id="_AF74D17B-C9A1-4EB4-ABBB-E54608570664" name="loan" typeRef="Loan" />
+  </dmn:inputData>
+  <dmn:decision id="_4DD759D5-16EB-4B0F-A915-7079F0D9E6DF" name="sumOperator">
+    <dmn:extensionElements />
+    <dmn:variable id="_B79D4622-0DBE-4D31-B984-BE2538CB076E" name="sumOperator" typeRef="number" />
+    <dmn:informationRequirement id="_D400A33A-8B60-4F68-88AB-6BADFA6E7E59">
+      <dmn:requiredInput href="#_61790127-FE8C-4642-ABE0-928BEE5C0316" />
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_4B5B1B26-0823-4F6D-B776-D0BD029ED102">
+      <dmn:text>loan.baseLoanAmount + loan.transaction.insuranceAmount</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:decision id="_3ED374D2-58F5-4E45-AF42-FF5854EDADC6" name="nnSumFunction">
+    <dmn:extensionElements />
+    <dmn:variable id="_7DB54257-1207-47A6-8A1F-B88326BBC6E0" name="nnSumFunction" typeRef="number" />
+    <dmn:informationRequirement id="_5E2886FC-8D4B-4A21-9115-8DD3BC9385B0">
+      <dmn:requiredInput href="#_61790127-FE8C-4642-ABE0-928BEE5C0316" />
+    </dmn:informationRequirement>
+    <dmn:literalExpression id="_88D3FBB5-0470-42D4-8F64-7D2EA4EC63DD">
+      <dmn:text>nn sum([loan.baseLoanAmount, loan.transaction.insuranceAmount])</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:decision id="_DC256C95-3853-4E20-A194-FAA41A6032CC" name="sumFunction">
+    <dmn:extensionElements />
+    <dmn:variable id="_2E0F2B3A-AA20-42C4-91FA-FC5DA16E5C05" name="sumFunction" typeRef="number" />
+    <dmn:informationRequirement id="_22C9C2E1-068E-4338-A808-DD9DD12FAB3F">
+      <dmn:requiredInput href="#_61790127-FE8C-4642-ABE0-928BEE5C0316" />
+    </dmn:informationRequirement>
+    <dmn:context id="_836BC14B-4C9E-40BA-B653-FAC10F3FD648">
+      <dmn:contextEntry id="_A513775C-646B-4CF9-9CA3-553F0E17F462">
+        <dmn:variable id="_24DB657E-B492-4C2B-9094-E4AA9BD41D2F" name="amountList" typeRef="numberList" />
+        <dmn:literalExpression id="_E0D92355-08D2-4726-B3B5-B12BBB6AF3FB">
+          <dmn:text>[loan.baseLoanAmount, loan.transaction.insuranceAmount]</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+      <dmn:contextEntry id="_D65990AD-59E6-44D9-B5F5-9BBC7A5F64A1">
+        <dmn:literalExpression id="_B74CEAC8-C87E-4733-9E0A-485807DA5E98">
+          <dmn:text>sum(amountList[item != null])</dmn:text>
+        </dmn:literalExpression>
+      </dmn:contextEntry>
+    </dmn:context>
+  </dmn:decision>
+  <dmn:association id="_8D24038A-6992-45F4-A4EF-9D9857EBDDD3" associationDirection="None">
+    <dmn:sourceRef href="#_4DD759D5-16EB-4B0F-A915-7079F0D9E6DF" />
+    <dmn:targetRef href="#_59116936-5831-4DC3-9A5F-FE0EAFD10ABD" />
+  </dmn:association>
+  <dmn:association id="_A3AA2041-4C0A-4AA5-BC3B-CD133589651E" associationDirection="None">
+    <dmn:sourceRef href="#_3ED374D2-58F5-4E45-AF42-FF5854EDADC6" />
+    <dmn:targetRef href="#_634581FC-3131-45F0-B874-31C4698510AA" />
+  </dmn:association>
+  <dmn:association id="_EFF48A89-4053-48EF-A7F0-AC4F3F60A9B7" associationDirection="None">
+    <dmn:sourceRef href="#_3ED374D2-58F5-4E45-AF42-FF5854EDADC6" />
+    <dmn:targetRef href="#_D45AF868-57BB-409D-AAF4-237ABCB49B78" />
+  </dmn:association>
+  <dmn:association id="_5D8BEBF0-091D-4321-B0CE-AB633D3A2247" associationDirection="None">
+    <dmn:sourceRef href="#_DC256C95-3853-4E20-A194-FAA41A6032CC" />
+    <dmn:targetRef href="#_4F29CC4D-4CAA-4A3D-AA01-7DBF35E6945F" />
+  </dmn:association>
+  <dmn:association id="_64270B7B-2E28-478C-8FC0-712C13D90CBC" associationDirection="None">
+    <dmn:sourceRef href="#_DC256C95-3853-4E20-A194-FAA41A6032CC" />
+    <dmn:targetRef href="#_4A2AFB3B-0D5A-456C-8038-07458078585B" />
+  </dmn:association>
+  <dmn:textAnnotation id="_59116936-5831-4DC3-9A5F-FE0EAFD10ABD" textFormat="text/plain">
+    <dmn:text>&apos;+&apos; operator return null if any of the item is null</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:textAnnotation id="_634581FC-3131-45F0-B874-31C4698510AA" textFormat="text/plain">
+    <dmn:text>nnSum() is a built in extention which ignores nulls and sums remaining items</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:textAnnotation id="_D45AF868-57BB-409D-AAF4-237ABCB49B78" textFormat="text/plain">
+    <dmn:text>By default nnSum() returns &apos;0&apos; if all the items are null or empty</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:textAnnotation id="_4F29CC4D-4CAA-4A3D-AA01-7DBF35E6945F" textFormat="text/plain">
+    <dmn:text>sum() throws an error if any of the items are null</dmn:text>
+  </dmn:textAnnotation>
+  <dmn:textAnnotation id="_4A2AFB3B-0D5A-456C-8038-07458078585B" textFormat="text/plain">
+    <dmn:text>Always make sure to sum() only not null items. In this case if all the items are null, it retuns null</dmn:text>
+  </dmn:textAnnotation>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="_3FE04FA8-2405-4917-BEB3-49EE41A09358" name="DRG" useAlternativeInputDataShape="false">
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_4B5B1B26-0823-4F6D-B776-D0BD029ED102">
+            <kie:width>471</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_88D3FBB5-0470-42D4-8F64-7D2EA4EC63DD">
+            <kie:width>694</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_836BC14B-4C9E-40BA-B653-FAC10F3FD648">
+            <kie:width>50</kie:width>
+            <kie:width>100</kie:width>
+            <kie:width>476</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E0D92355-08D2-4726-B3B5-B12BBB6AF3FB">
+            <kie:width>476</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_B74CEAC8-C87E-4733-9E0A-485807DA5E98">
+            <kie:width>476</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-drg-_61790127-FE8C-4642-ABE0-928BEE5C0316" dmnElementRef="_61790127-FE8C-4642-ABE0-928BEE5C0316" isCollapsed="false">
+        <dmndi:DMNStyle id="_6E0B6B5A-B476-4FAA-934A-24EC25D52F07">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="740" y="460" width="100" height="50" />
+        <dmndi:DMNLabel id="_0FF4D0E6-ABDB-4312-A0D3-88E3CC98353A" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_4DD759D5-16EB-4B0F-A915-7079F0D9E6DF" dmnElementRef="_4DD759D5-16EB-4B0F-A915-7079F0D9E6DF" isCollapsed="false">
+        <dmndi:DMNStyle id="_8B60F431-F31B-4FD3-A0FB-B88C45FD7AB2">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="660" y="240" width="100" height="50" />
+        <dmndi:DMNLabel id="_309897BD-4756-4429-8F2F-E9EB030F191E" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_3ED374D2-58F5-4E45-AF42-FF5854EDADC6" dmnElementRef="_3ED374D2-58F5-4E45-AF42-FF5854EDADC6" isCollapsed="false">
+        <dmndi:DMNStyle id="_5EACEB0F-D43A-4F4D-8C89-0E734354726D">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="920" y="240" width="173" height="50" />
+        <dmndi:DMNLabel id="_FE17FFB9-534C-4C1F-9C00-15C0A57A2D4E" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_DC256C95-3853-4E20-A194-FAA41A6032CC" dmnElementRef="_DC256C95-3853-4E20-A194-FAA41A6032CC" isCollapsed="false">
+        <dmndi:DMNStyle id="_0E4890A1-ABFF-4298-94CB-6AA54FC039CB">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="400" y="240" width="149" height="50" />
+        <dmndi:DMNLabel id="_17D06D2E-E200-41E6-A3BE-F12FCDF3ADAE" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_59116936-5831-4DC3-9A5F-FE0EAFD10ABD" dmnElementRef="_59116936-5831-4DC3-9A5F-FE0EAFD10ABD" isCollapsed="false">
+        <dmndi:DMNStyle id="_38FAC46E-1B03-48FF-AA1F-5919A2CB9936">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="720" y="100" width="240" height="80" />
+        <dmndi:DMNLabel id="_0F908DD4-FD88-442D-A1EE-04B186651046" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_634581FC-3131-45F0-B874-31C4698510AA" dmnElementRef="_634581FC-3131-45F0-B874-31C4698510AA" isCollapsed="false">
+        <dmndi:DMNStyle id="_E6E21489-5FB0-47C3-88AC-E54F2D47428A">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1160" y="80" width="240" height="120" />
+        <dmndi:DMNLabel id="_BF4252B8-901E-4E39-8DAD-6E48C505306E" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_D45AF868-57BB-409D-AAF4-237ABCB49B78" dmnElementRef="_D45AF868-57BB-409D-AAF4-237ABCB49B78" isCollapsed="false">
+        <dmndi:DMNStyle id="_9E44D75B-D35D-448B-A9BB-C90F42D46C16">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="1220" y="360" width="220" height="100" />
+        <dmndi:DMNLabel id="_3BA66BFE-BE32-4791-8BE7-819D439FDE7C" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_4F29CC4D-4CAA-4A3D-AA01-7DBF35E6945F" dmnElementRef="_4F29CC4D-4CAA-4A3D-AA01-7DBF35E6945F" isCollapsed="false">
+        <dmndi:DMNStyle id="_BC4A11ED-63D1-4655-ACE8-C3C5EDEBEE5C">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="280" y="380" width="280" height="80" />
+        <dmndi:DMNLabel id="_707DF341-ADAF-46C9-B257-5168E20B2F78" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-drg-_4A2AFB3B-0D5A-456C-8038-07458078585B" dmnElementRef="_4A2AFB3B-0D5A-456C-8038-07458078585B" isCollapsed="false">
+        <dmndi:DMNStyle id="_0FE183B8-F564-434C-A705-BB7D950A7079">
+          <dmndi:FillColor red="255" green="255" blue="255" />
+          <dmndi:StrokeColor red="0" green="0" blue="0" />
+          <dmndi:FontColor red="0" green="0" blue="0" />
+        </dmndi:DMNStyle>
+        <dc:Bounds x="380" y="40" width="280" height="100" />
+        <dmndi:DMNLabel id="_36008026-37CE-4C47-946A-37A5A8C47F25" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-drg-_D400A33A-8B60-4F68-88AB-6BADFA6E7E59" dmnElementRef="_D400A33A-8B60-4F68-88AB-6BADFA6E7E59">
+        <di:waypoint x="790" y="485" />
+        <di:waypoint x="710" y="290" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_5E2886FC-8D4B-4A21-9115-8DD3BC9385B0" dmnElementRef="_5E2886FC-8D4B-4A21-9115-8DD3BC9385B0">
+        <di:waypoint x="790" y="485" />
+        <di:waypoint x="1006.5" y="290" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_22C9C2E1-068E-4338-A808-DD9DD12FAB3F" dmnElementRef="_22C9C2E1-068E-4338-A808-DD9DD12FAB3F">
+        <di:waypoint x="790" y="485" />
+        <di:waypoint x="474.5" y="290" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_8D24038A-6992-45F4-A4EF-9D9857EBDDD3" dmnElementRef="_8D24038A-6992-45F4-A4EF-9D9857EBDDD3">
+        <di:waypoint x="710" y="265" />
+        <di:waypoint x="840" y="140" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_A3AA2041-4C0A-4AA5-BC3B-CD133589651E" dmnElementRef="_A3AA2041-4C0A-4AA5-BC3B-CD133589651E">
+        <di:waypoint x="1006.5" y="265" />
+        <di:waypoint x="1280" y="140" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_EFF48A89-4053-48EF-A7F0-AC4F3F60A9B7" dmnElementRef="_EFF48A89-4053-48EF-A7F0-AC4F3F60A9B7">
+        <di:waypoint x="1006.5" y="265" />
+        <di:waypoint x="1330" y="410" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_5D8BEBF0-091D-4321-B0CE-AB633D3A2247" dmnElementRef="_5D8BEBF0-091D-4321-B0CE-AB633D3A2247">
+        <di:waypoint x="474.5" y="265" />
+        <di:waypoint x="420" y="420" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-drg-_64270B7B-2E28-478C-8FC0-712C13D90CBC" dmnElementRef="_64270B7B-2E28-478C-8FC0-712C13D90CBC">
+        <di:waypoint x="474.5" y="265" />
+        <di:waypoint x="520" y="90" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>
