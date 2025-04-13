@@ -6,7 +6,10 @@ import com.dmnapp.maven.plugin.util.PluginUtility;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.xml.sax.SAXException;
 
@@ -19,10 +22,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-@Mojo(name = "process")
+@Mojo(name = "generate-dmnapp",
+      requiresDependencyResolution = ResolutionScope.RUNTIME,
+        requiresProject = true,
+      defaultPhase = LifecyclePhase.POST_INTEGRATION_TEST,
+      threadSafe = true)
 public class DmnAppPlugin extends AbstractMojo {
-
+    @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
+    @Parameter(property = "dmn.spec.version", defaultValue = "1.5")
+    private String dmnSpec;
+    @Parameter(property = "api.spec.name", defaultValue = "openapi.json")
+    private String apiSpecName;
 
     private String outputFile = "dmnapp.json";
 
@@ -83,18 +94,15 @@ public class DmnAppPlugin extends AbstractMojo {
                 }
             }
         }
-
-        String dmnSpec = project.getProperties().get("dmnSpec") != null ? project.getProperties().get("dmnSpec").toString() : "1.5";
-        String apiSpec = project.getProperties().get("apiSpec") != null ? project.getProperties().get("apiSpec").toString() : "openapi.json";
-            
+       
         getLog().debug("Using DMN specification version: " + dmnSpec);
-        getLog().debug("Using API specification: " + apiSpec);
+        getLog().debug("Using API specification: " + apiSpecName);
 
         DmnApplicationConfig dmnapp = DmnApplicationConfig.builder()
             .name(project.getArtifactId())
             .version(project.getVersion())
             .dmnSpec(dmnSpec)
-            .apiSpec(apiSpec)
+            .apiSpec(apiSpecName)
             .dmns(metadataList.size() > 0 ? metadataList : null)
             .build();
 

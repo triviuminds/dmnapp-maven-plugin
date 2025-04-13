@@ -57,12 +57,15 @@ class DmnAppPluginTest {
         when(project.getBasedir()).thenReturn(tempDir.toFile());
         when(project.getArtifactId()).thenReturn("sample-dmnapp");
         when(project.getVersion()).thenReturn("1.0.0");
-        
-        // Set up properties
-        Properties properties = new Properties();
-        properties.setProperty("dmnSpec", "1.5");
-        properties.setProperty("apiSpec", "openapi.json");
-        when(project.getProperties()).thenReturn(properties);
+
+        java.lang.reflect.Field dmnSpec = DmnAppPlugin.class.getDeclaredField("dmnSpec");
+        dmnSpec.setAccessible(true);
+        dmnSpec.set(plugin,  "1.5");
+
+        java.lang.reflect.Field apiSpecName = DmnAppPlugin.class.getDeclaredField("apiSpecName");
+        apiSpecName.setAccessible(true);
+        apiSpecName.set(plugin, "openapi.json");
+
     }
 
     @Test

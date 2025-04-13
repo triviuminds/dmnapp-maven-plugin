@@ -34,9 +34,18 @@ Add the plugin to your project's `pom.xml`:
 <build>
     <plugins>
         <plugin>
-            <groupId>com.dmnapp</groupId>
+            <groupId>com.triviuminds.dmn</groupId>
             <artifactId>dmnapp-maven-plugin</artifactId>
             <version>1.0.0-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <id>dmnapp-tweaks</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>generate-dmnapp</goal>
+                </goals>
+              </execution>
+            </executions>
         </plugin>
     </plugins>
 </build>
