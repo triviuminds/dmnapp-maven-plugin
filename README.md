@@ -11,6 +11,7 @@ A Maven plugin that automatically scans and processes Decision Model and Notatio
 - [Requirements](#requirements)
 - [Usage](#usage)
 - [Output Format](#output-format)
+- [License](#license)
 
 ## Features
 
@@ -67,3 +68,5 @@ The plugin generates a JSON file with the following structure:
 }
 ```
 
+## License
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
