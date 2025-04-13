@@ -1,4 +1,4 @@
-# DMNApp Maven Plugin
+# dmnapp-maven-plugin
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.dmnapp/dmnapp-maven-plugin.svg)](https://search.maven.org/artifact/com.dmnapp/dmnapp-maven-plugin)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
