@@ -11,7 +11,6 @@ A Maven plugin that automatically scans and processes Decision Model and Notatio
 - [Requirements](#requirements)
 - [Usage](#usage)
 - [Output Format](#output-format)
-- [License](#license)
 
 ## Features
 
